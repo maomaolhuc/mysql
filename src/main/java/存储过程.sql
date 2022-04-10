@@ -33,19 +33,15 @@ END;
 --2 输出体 ： 姓名，部门编码，部门名称，工资，员工所在部门平均工资
 
 SELECT E.EMPNO,E.ENAME ,E.DEPTNO,D.DNAME ,E.SAL,C.AVG_SAL FROM EMP  E,
-                                                               (SELECT DEPTNO,AVG(SAL) AVG_SAL FROM EMP GROUP BY DEPTNO) C ,
-                                                               DEPT D
-WHERE E.DEPTNO = C.DEPTNO
-  AND E.DEPTNO = D.DEPTNO
+(SELECT DEPTNO,AVG(SAL) AVG_SAL FROM EMP GROUP BY DEPTNO) C ,DEPT D
+WHERE E.DEPTNO = C.DEPTNO AND E.DEPTNO = D.DEPTNO
 
 --创建视图
 CREATE OR REPLACE VIEW VI_EMP_AVGSAL
 AS
 SELECT E.EMPNO,E.ENAME ,E.DEPTNO,D.DNAME ,E.SAL,C.AVG_SAL FROM EMP  E,
-                                                               (SELECT DEPTNO,AVG(SAL) AVG_SAL FROM EMP GROUP BY DEPTNO) C ,
-                                                               DEPT D
-WHERE E.DEPTNO = C.DEPTNO
-  AND E.DEPTNO = D.DEPTNO
+(SELECT DEPTNO,AVG(SAL) AVG_SAL FROM EMP GROUP BY DEPTNO) C ,DEPT D
+WHERE E.DEPTNO = C.DEPTNO AND E.DEPTNO = D.DEPTNO
 
 
 
