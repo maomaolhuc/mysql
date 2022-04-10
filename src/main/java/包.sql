@@ -1,0 +1,111 @@
+/*
+CREATE OR REPLACE PACKAGE NAME         相当于首先定义接口
+CREATE OR REPLACE PACKAGE BODY NAME    然后实现
+程序包规范创建语法如下：
+      CREATE OR REPLACE PACKAGE package_name
+      IS | AS
+         公用类型或变量常量的声明;
+         公用过程或函数的声明；
+      END;
+     包主体部分创建语法如下:
+      CREATE OR REPLACE PACKAGE BODY package_name
+      IS | AS
+          私有类型或变量常量的声明；
+          公用过程或函数的实现；
+      END;
+*/
+--包  --java里面的接口类
+--包里面包含 常量，变量的定义 存储过程的定义 函数的定义
+--包体里面实现包中定义的内容
+
+--案例
+CREATE OR REPLACE PACKAGE MYPACKAGE
+IS
+   PI CONSTANT NUMBER := 3.14159;   --定义一个常量
+   FUNCTION GET_AREA(RADIUS NUMBER) RETURN NUMBER;   --定义一个函数
+   PROCEDURE SAY_HI(PNAME VARCHAR2);  --定义一个存储过程
+END;
+
+--注意点：在包里定义了方法 那么必须在包体里面实现 并且参数名字等必须一摸一样
+CREATE OR REPLACE PACKAGE BODY MYPACKAGE
+AS
+   FUNCTION GET_AREA(RADIUS NUMBER) RETURN NUMBER
+     IS
+     V_AREA NUMBER :=0;
+BEGIN
+       V_AREA := RADIUS*RADIUS*MYPACKAGE.PI;
+RETURN V_AREA;
+END;
+
+     PROCEDURE SAY_HI(PNAME VARCHAR2)
+IS
+BEGIN
+         DBMS_OUTPUT.PUT_LINE('HELLO ' || PNAME);
+END;
+END;
+
+--包的使用
+DECLARE
+BEGIN
+  MYPACKAGE.SAY_HI('eeeee');
+END;
+
+DECLARE
+BEGIN
+  DBMS_OUTPUT.PUT_LINE(MYPACKAGE.GET_AREA(20));
+END;
+
+
+--如果有return 则表示游标的游标类型已经定义  后面的直接可以引用这个游标类型
+--如果没有return 则表示游标的游标类型未定义   在后面的时候要定义游标类型
+
+--第二个案例  包中游标的使用
+CREATE OR REPLACE PACKAGE MYPACKAGE3
+IS
+TYPE EMP_CUR IS REF CURSOR RETURN EMP%ROWTYPE;    --定义一个动态游标
+PROCEDURE QUERY_EMP (V_DEPTNO IN NUMBER,EC OUT EMP_CUR);  --定义一个存储过程
+END;
+
+--实现类
+CREATE OR REPLACE PACKAGE BODY MYPACKAGE3
+IS
+   PROCEDURE QUERY_EMP(V_DEPTNO IN NUMBER,EC OUT EMP_CUR)
+   IS
+BEGIN
+OPEN EC FOR SELECT * FROM EMP WHERE DEPTNO = V_DEPTNO;
+END;
+END;
+
+--调用
+DECLARE
+C_EMP MYPACKAGE3.EMP_CUR;
+   V_EMP C_EMP%ROWTYPE;
+BEGIN
+   MYPACKAGE3.QUERY_EMP(10,C_EMP);
+   LOOP
+FETCH C_EMP INTO V_EMP;
+     EXIT WHEN C_EMP%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE(V_EMP.EMPNO);
+END LOOP;
+
+   IF C_EMP%ISOPEN THEN
+     CLOSE C_EMP;
+END IF ;
+END;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
