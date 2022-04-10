@@ -1,0 +1,78 @@
+1.数据库的相关概念
+	数据：存在计算机中的文本，图形，音频。。。
+	数据库：存储数据的仓库
+	数据库管理系统（dbms）（mysql，Oracle）：对数据库进行统一的管理和控制，
+	   以保证数据库的安全性和完整性，高效的获取和维护数据系统软件
+	数据库应用程序（图书管理系统，淘宝）：
+	   在数据库管理系统的基础上，使用数据库管理系统的语法，开发的直接面向最终用户的
+	数据库管理员：
+	最终用户：
+
+  Oracle公司：
+  1977 SDL
+  1979 RSI
+  1983 Oracle
+  2002 甲骨文
+  2009 sun
+  2013 第二大软件公司
+
+  Oracle：
+  Oracle8i/9i, oracle10g/11g  oracle12c
+  现在的版本一10g,和11g为主。9i（正在逐步退出）和12C（还比较新，这种大型数据库更换版本比mysql困难多了，而且还要各种测试，毕竟数据太重要）。
+
+                优点：是目前世界上使用最为广泛的数据库之一，它具有强大而灵活的数据库体系结构，跨操作系统平台，可用行，可拓展性，
+      安全性，稳定性都比一般的数据库要强，是目前中大型企业和事业单位数据库的首选。
+
+
+
+
+  数据库类型：
+  关系型数据库（MySQL，Oracle，SQLserver，db2, excel）：
+      所有的数据库分门别类的进行存储，数据都是有关联的
+  非关系型数据库(nosql not only sql)：(mangoDB,hadoop)
+      对数据不进行任何处理。
+
+
+2.Oracle的安装于卸载
+
+安装之后的服务
+			OracleService<SID>：数据库实例服务
+			OracleOraDb11g_hom1TNSListener ：数据库监听
+
+
+用户名：
+sys:超级管理员 最高级别   sys 总裁
+system:普通管理员  system  经理
+scott:测试和练习账户 tiger   职员
+
+
+
+在不知道任何账户密码的情况下：
+sqlplus /nolog   sqlplus -表示运行sqlplus命令，进入sqlplus环境   nolog ：表示不登陆
+conn / as sysdba    连接到管理员
+alter user scott account unlock;  解锁账户
+alter user scott account lock;   锁定账户
+alalter user system identified by system;   修改密码
+conn 用户名/密码 登陆命令   --前提是sql环境
+
+exit; 退出
+show user; 显示当前用户
+
+select name from v$database;   查看当前数据库的名字。
+
+3.sql语言介绍
+    -结构化查询语言，最重要的关系数据库操作语言，是所有关系数据库管理系统的标准语言
+		-有些厂商在使用sql的时候，对sql进行扩展  比如：PL_SQL
+		-sql语言是一个非过程化的语言，只需要提出做什么，不需要指明怎么做。
+
+
+    -DQL(数据查询语言)
+			SELECT   查询
+		-DML(数据操作语言)  表数据
+			INSERT,UPDATE,DELETE
+		-DDL(数据定义语言) 表
+			CREATE,ALTER,DROP
+		-DCL(数据控制语言)
+			GRANT,REVOKE
+		-TCL(事务控制语言)
+			ROLLBACK,COMMIT
